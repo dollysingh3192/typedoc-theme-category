@@ -1,4 +1,9 @@
 # Typedoc Theme category
+
+
+
+![plot](https://github.com/dollysingh3192/typedoc-theme-category/blob/main/.github/images/demo.png?raw=true)
+
 ## Installing
 
 ---

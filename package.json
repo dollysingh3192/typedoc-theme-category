@@ -1,6 +1,6 @@
 {
   "name": "typedoc-theme-category",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "license": "ISC",
   "main": "dist/index.js",
   "repository": "https://github.com/dollysingh3192/typedoc-theme-category.git",
