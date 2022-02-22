@@ -1,5 +1,7 @@
 {
-  "extends": ["eslint-config-fuks"],
+  "extends": [
+    "eslint-config-fuks"
+  ],
   "parserOptions": {
     "project": "./tsconfig.json",
     "sourceType": "module"

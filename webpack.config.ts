@@ -1,14 +1,20 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable unicorn/prefer-module */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Configuration } from 'webpack';
-import * as path from 'node:path';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+
+const path = require('path');
 
 const config: Configuration = {
   mode: 'production',
   entry: './assets/js/custom.ts',
   output: {
     filename: 'custom.js',
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     path: path.resolve(process.cwd(), 'dist/assets'),
   },
   plugins: [

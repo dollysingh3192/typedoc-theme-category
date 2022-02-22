@@ -1,9 +1,9 @@
 {
-  "name": "typedoc-theme-hierarchy",
-  "version": "1.0.14",
+  "name": "typedoc-theme-category",
+  "version": "1.0.3",
   "license": "ISC",
   "main": "dist/index.js",
-  "repository": "https://github.com/DiFuks/typedoc-theme-hierarchy",
+  "repository": "https://github.com/dollysingh3192/typedoc-theme-category.git",
   "keywords": [
     "typedoc-theme"
   ],
@@ -29,8 +29,8 @@
   },
   "scripts": {
     "build": "webpack && tsc --project tsconfig.build.json",
-    "lint": "tsc --noEmit && eslint \"./**/*.{ts,tsx,js}\"",
-    "prepublishOnly": "yarn lint && yarn build"
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "yarn build"
   },
   "dependencies": {
     "fs-extra": "^10.0.0"

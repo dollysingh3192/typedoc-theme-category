@@ -1,3 +1,8 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable prefer-arrow/prefer-arrow-functions */
+/* eslint-disable max-classes-per-file */
 import {
   DefaultTheme,
   DefaultThemeRenderContext,
@@ -11,11 +16,14 @@ import path from 'path';
 
 import { navigation } from '../partials/navigation';
 
+function bind<F, L extends any[], R>(fn: (f: F, ...a: L) => R, first: F) {
+  return (...r: L) => fn(first, ...r);
+}
 class OverrideThemeContext extends DefaultThemeRenderContext {
   public constructor(theme: DefaultTheme, options: Options) {
     super(theme, options);
 
-    this.navigation = navigation(this.urlTo.bind(this));
+    this.navigation = bind(navigation, this);
   }
 }
 
@@ -31,15 +39,16 @@ export class OverrideTheme extends DefaultTheme {
       await copy(
         path.join(
           process.cwd(),
-          '/node_modules/typedoc-theme-hierarchy/dist/assets',
+          '/node_modules/typedoc-theme-category/dist/assets',
         ),
         path.join(out, '/assets'),
       );
     });
   }
 
+  // eslint-disable-next-line prettier/prettier
   /**
-   * Переопределяет стандартный контекст.
+   * GetRender.
    */
   public override getRenderContext(): OverrideThemeContext {
     this._contextCache ||= new OverrideThemeContext(

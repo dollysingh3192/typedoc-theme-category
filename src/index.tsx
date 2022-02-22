@@ -1,9 +1,11 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable prettier/prettier */
 import { Application, JSX } from 'typedoc';
 
 import { OverrideTheme } from './themes/OverrideTheme';
 
 /**
- * Инициализирует плагин с темой.
+ *Load function.
  */
 export const load = (app: Application): void => {
   app.renderer.hooks.on(
@@ -20,5 +22,5 @@ export const load = (app: Application): void => {
     ),
   );
 
-  app.renderer.defineTheme('hierarchy', OverrideTheme);
+  app.renderer.defineTheme('category', OverrideTheme);
 };

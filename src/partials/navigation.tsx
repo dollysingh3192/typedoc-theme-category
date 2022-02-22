@@ -1,143 +1,87 @@
-import { JSX, PageEvent, Reflection } from 'typedoc';
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable array-callback-return */
+/* eslint-disable arrow-body-style */
+/* eslint-disable unicorn/no-array-for-each */
+/* eslint-disable prettier/prettier */
+/* eslint-disable no-plusplus */
+/* eslint-disable unicorn/no-for-loop */
+/* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/function-component-definition */
+
+import { ContainerReflection, DefaultThemeRenderContext, JSX, PageEvent, Reflection } from 'typedoc';
 import { DeclarationReflection } from 'typedoc/dist/lib/models/reflections/declaration';
 
-interface IItem extends DeclarationReflection {
-  title: string;
-}
+const secondaryNavigation = (context: DefaultThemeRenderContext, props: PageEvent<Reflection>): JSX.Element | undefined => {
+  const children = props.model instanceof ContainerReflection ? props.model.children || [] : [];
 
-interface ICategory {
-  id: string;
-  items: IItem[];
-  categories: Record<string, ICategory>;
-}
+  const obj: { [key: string]: DeclarationReflection[] } = {};
 
-/**
- * Рендерит панель навигации.
- */
-export const navigation =
-  (urlTo: (reflection: Reflection) => string | undefined) =>
-  (props: PageEvent<Reflection>): JSX.Element => {
-    const categories = formatFileHierarchy(props.model.project.children || []);
+  for (let i = 0; i < children.length; i++) {
+    const temp = children[i];
 
-    return (
-      <div class='tree'>
-        <Navigation {...categories} urlTo={urlTo} />
-      </div>
-    );
-  };
+    if (temp) {
+      const str = temp.kindString as string;
 
-const Navigation = ({
-  id,
-  categories,
-  items,
-  urlTo,
-}: ICategory & {
-  urlTo: (reflection: Reflection) => string | undefined;
-}): JSX.Element => (
-  <ul class='js-category-list category' data-id={id}>
-    {Object.entries(categories).map(([key, item]) => (
-      <li>
-        <span class='js-category-title category__title' data-id={item.id}>
-          <div class='category__folder js-category-icon' data-id={item.id} />
-          {key}
-        </span>
-        <Navigation
-          id={item.id}
-          categories={item.categories}
-          items={item.items}
-          urlTo={urlTo}
-        />
-      </li>
-    ))}
-    {items.map((item) => (
-      <li>
-        <a
-          class='category__link js-category-link category__link--ts'
-          href={urlTo(item)}
-          data-id={item.url && `/${item.url}`}
-        >
-          {item.title}
-        </a>
-        <ul>
-          {item.children?.map((subItem) => (
+      if (!obj[str]) {
+        obj[str] = [];
+      }
+      obj[str]?.push(temp);
+    }
+  }
+
+  const template: JSX.Element[] = [];
+
+  Object.keys(obj).forEach((child) => {
+    const content = obj[child] || [];
+
+    const x = (<li>
+      <span class='caret'>{child}</span>
+      <ul class='nested'>
+        {content.map((subItem) => {
+          return (
             <li class={subItem.cssClasses}>
               <a
-                class='category__link tsd-kind-icon js-category-link'
-                href={urlTo(subItem)}
-                data-id={subItem.url && `/${subItem.url}`}
+                class='tsd-kind-icon'
+                href={context.urlTo(subItem)}
               >
                 {subItem.name}
               </a>
             </li>
-          ))}
-        </ul>
-      </li>
-    ))}
-  </ul>
-);
+          )
+        })}
+      </ul>
+    </li>);
 
-const formatFileHierarchy = (values: DeclarationReflection[]): ICategory => {
-  const result: ICategory = {
-    items: [],
-    categories: {},
-    id: 'root',
-  };
+    template.push(x);
+  });
 
-  for (const item of values) {
-    const titleSplit = (item.name || '').split('/');
+  const pageNavigation = (
+    <ul id="myUL">
+      {template}
+    </ul>
+  );
 
-    addToCategory(result, item, titleSplit, 0);
-  }
+  return (
+    <nav class="tsd-navigation secondary menu-sticky">
+      {pageNavigation}
+    </nav>
+  );
+}
 
-  return result;
+/**
+ *Definition.
+ */
+export const navigation = (
+  context: DefaultThemeRenderContext,
+  props: PageEvent<Reflection>,
+): JSX.Element => {
+
+
+  return (
+    <div>
+      {secondaryNavigation(context, props)}
+    </div>
+  );
 };
 
-const addToCategory = (
-  category: ICategory,
-  item: DeclarationReflection,
-  titleSplit: string[],
-  idx: number,
-): void => {
-  if (idx === titleSplit.length - 1) {
-    if (!category.items) {
-      // eslint-disable-next-line no-param-reassign
-      category.items = [];
-    }
-
-    const fileName = item?.sources?.[0]?.file?.name;
-
-    if (!fileName) {
-      return;
-    }
-
-    category.items.push({
-      ...item,
-      title: fileName,
-    } as IItem);
-
-    return;
-  }
-
-  const title = titleSplit[idx];
-
-  if (!title) {
-    return;
-  }
-
-  if (!category.categories[title]) {
-    // eslint-disable-next-line no-param-reassign
-    category.categories[title] = {
-      items: [],
-      categories: {},
-      id: `${category.id}-${title}`,
-    };
-  }
-
-  const categoryToAdd = category.categories[title];
-
-  if (!categoryToAdd) {
-    return;
-  }
-
-  addToCategory(categoryToAdd, item, titleSplit, idx + 1);
-};

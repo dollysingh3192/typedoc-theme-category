@@ -15,4 +15,11 @@
     "jsxFragmentFactory": "JSX.Fragment",
     "isolatedModules": false
   },
+  "exclude": [
+    "node_modules",
+    "dist",
+    "*.config.js",
+    "*.conf.js",
+    "webpack"
+  ]
 }
