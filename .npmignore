@@ -1,0 +1,10 @@
+.idea
+src
+/assets
+.github
+.eslintignore
+.eslintrc
+tsconfig*
+yarn.lock
+webpack.config.ts
+docs
