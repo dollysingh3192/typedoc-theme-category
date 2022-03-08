@@ -1,9 +1,6 @@
-ul, #myUL {
-    list-style-type: none;
-  }
-
   #myUL {
     margin: 0;
+    list-style-type: none;
     padding: 0;
   }
 
@@ -28,10 +25,10 @@ ul, #myUL {
     transform: rotate(90deg);
   }
 
-  .nested {
+  .theme-category-nested {
     display: none;
   }
 
-  .active {
+  .theme-category-active {
     display: block;
   }

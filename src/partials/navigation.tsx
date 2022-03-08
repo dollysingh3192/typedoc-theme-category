@@ -37,7 +37,7 @@ const secondaryNavigation = (context: DefaultThemeRenderContext, props: PageEven
 
     const x = (<li>
       <span class='caret'>{child}</span>
-      <ul class='nested'>
+      <ul class='theme-category-nested'>
         {content.map((subItem) => {
           return (
             <li class={subItem.cssClasses}>
